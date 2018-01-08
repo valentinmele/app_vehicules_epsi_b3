@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_gestion_vehicules" default="compile.module.gestion_vehicules">
+  <dirname property="module.gestion_vehicules.basedir" file="${ant.file.module_gestion_vehicules}"/>
+  
+  <property name="module.jdk.home.gestion_vehicules" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.gestion_vehicules" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.gestion_vehicules" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.gestion_vehicules" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+  
+  <property name="gestion_vehicules.output.dir" value="${module.gestion_vehicules.basedir}/out/production/gestion_vehicules"/>
+  <property name="gestion_vehicules.testoutput.dir" value="${module.gestion_vehicules.basedir}/out/test/gestion_vehicules"/>
+  
+  <path id="gestion_vehicules.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gestion_vehicules.module.production.classpath">
+    <path refid="${module.jdk.classpath.gestion_vehicules}"/>
+    <path refid="library.sqlite-jdbc-3.21.0.classpath"/>
+  </path>
+  
+  <path id="gestion_vehicules.runtime.production.module.classpath">
+    <pathelement location="${gestion_vehicules.output.dir}"/>
+    <path refid="library.sqlite-jdbc-3.21.0.classpath"/>
+  </path>
+  
+  <path id="gestion_vehicules.module.classpath">
+    <path refid="${module.jdk.classpath.gestion_vehicules}"/>
+    <pathelement location="${gestion_vehicules.output.dir}"/>
+    <path refid="library.sqlite-jdbc-3.21.0.classpath"/>
+  </path>
+  
+  <path id="gestion_vehicules.runtime.module.classpath">
+    <pathelement location="${gestion_vehicules.testoutput.dir}"/>
+    <pathelement location="${gestion_vehicules.output.dir}"/>
+    <path refid="library.sqlite-jdbc-3.21.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gestion_vehicules">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gestion_vehicules">
+    <patternset refid="excluded.from.module.gestion_vehicules"/>
+  </patternset>
+  
+  <path id="gestion_vehicules.module.sourcepath">
+    <dirset dir="${module.gestion_vehicules.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gestion_vehicules" depends="compile.module.gestion_vehicules.production,compile.module.gestion_vehicules.tests" description="Compile module gestion_vehicules"/>
+  
+  <target name="compile.module.gestion_vehicules.production" depends="register.custom.compilers" description="Compile module gestion_vehicules; production classes">
+    <mkdir dir="${gestion_vehicules.output.dir}"/>
+    <javac2 destdir="${gestion_vehicules.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gestion_vehicules}/javac">
+      <compilerarg line="${compiler.args.gestion_vehicules}"/>
+      <bootclasspath refid="gestion_vehicules.module.bootclasspath"/>
+      <classpath refid="gestion_vehicules.module.production.classpath"/>
+      <src refid="gestion_vehicules.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gestion_vehicules"/>
+    </javac2>
+    
+    <copy todir="${gestion_vehicules.output.dir}">
+      <fileset dir="${module.gestion_vehicules.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gestion_vehicules.tests" depends="register.custom.compilers,compile.module.gestion_vehicules.production" description="compile module gestion_vehicules; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gestion_vehicules" description="cleanup module">
+    <delete dir="${gestion_vehicules.output.dir}"/>
+    <delete dir="${gestion_vehicules.testoutput.dir}"/>
+  </target>
+</project>
